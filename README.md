@@ -40,27 +40,27 @@ El sistema calcula la ruta solicitada mediante el algoritmo seleccionado y permi
 
 ### Backend
 
-- Python: lenguaje de programación.
+- **Python**: lenguaje de programación.
 
-- Flask: desarrollo de la API y gestión de solicitudes HTTP.
+- **Flask**: desarrollo de la API y gestión de solicitudes HTTP.
 
-- Flask-CORS: configuración de la comunicación entre frontend y backend.
+- **Flask-CORS**: configuración de la comunicación entre frontend y backend.
 
-- Pandas: lectura y procesamiento de los archivos CSV.
+- **Pandas**: lectura y procesamiento de los archivos CSV.
 
-- Pytest: ejecución de pruebas de los algoritmos.
+- **Pytest**: ejecución de pruebas de los algoritmos.
 
 ### Frontend
 
-- Vue 3: desarrollo de la interfaz de usuario.
+- **Vue 3**: desarrollo de la interfaz de usuario.
 
-- JavaScript: lógica de interacción y comunicación con la API.
+- **JavaScript**: lógica de interacción y comunicación con la API.
 
-- Vite: servidor de desarrollo y herramienta de compilación.
+- **Vite**: servidor de desarrollo y herramienta de compilación.
 
-- Lucide Vue Next: iconografía.
+- **Lucide Vue Next**: iconografía.
 
-- CSS: estilos y diseño de la interfaz.
+- **CSS**: estilos y diseño de la interfaz.
 
 ## Arquitectura del proyecto
 
@@ -136,23 +136,23 @@ intelligent-traffic-application/
 
 La aplicación utiliza dos archivos CSV ubicados en data/processed/.
 
-1. **nodos_establecimientos_lima.csv**
+### 1. nodos_establecimientos_lima.csv
 
 Contiene la información de los establecimientos que conforman los nodos del grafo.
 
 Entre sus principales campos se encuentran:
 
-- `id_nodo:`identificador único del establecimiento.
+- `id_nodo`: identificador único del establecimiento.
 
-- `tipo:`clasificación del establecimiento.
+- `tipo`: clasificación del establecimiento.
 
-- `nombre:`nombre del laboratorio, farmacia o botica.
+- `nombre`: nombre del laboratorio, farmacia o botica.
 
-- `latitud y longitud:`coordenadas geográficas.
+- `latitud y longitud`: coordenadas geográficas.
 
-- `distrito:`distrito donde se encuentra ubicado.
+- `distrito`: distrito donde se encuentra ubicado.
 
-- `direccion:`dirección del establecimiento.
+- `direccion`: dirección del establecimiento.
 
 El archivo contiene **1,480 establecimientos**:
 
@@ -160,25 +160,25 @@ El archivo contiene **1,480 establecimientos**:
 
 - 1,357 farmacias y boticas.
 
-2. **aristas_rutas_modeladas.csv**
+### 2. aristas_rutas_modeladas.csv
 
 Contiene las conexiones dirigidas entre los establecimientos y los pesos utilizados para calcular los recorridos.
 
 Entre sus principales campos se encuentran:
 
-- `origen:`identificador del nodo de origen.
+- `origen`: identificador del nodo de origen.
 
-- `destino:`identificador del nodo de destino.
+- `destino`: identificador del nodo de destino.
 
-- `distancia_ruta_estimada_km:`distancia estimada del recorrido.
+- `distancia_ruta_estimada_km`: distancia estimada del recorrido.
 
-- `tiempo_estimado_min:`tiempo estimado de desplazamiento.
+- `tiempo_estimado_min`: tiempo estimado de desplazamiento.
 
-- `velocidad_modelada_kph:`velocidad utilizada en el escenario.
+- `velocidad_modelada_kph`: velocidad utilizada en el escenario.
 
-- `factor_congestion:`factor considerado para modelar la congestión.
+- `factor_congestion`: factor considerado para modelar la congestión.
 
-- `escenario:`escenario de circulación utilizado.
+- `escenario`: escenario de circulación utilizado.
 
 El archivo contiene 9,618 conexiones dirigidas.
 
@@ -216,37 +216,53 @@ Para ejecutar la aplicación se deben iniciar el backend y el frontend por separ
 
 ### 1. Clonar el repositorio
 
-`git clone <URL_DEL_REPOSITORIO>`
+```text
+git clone <URL_DEL_REPOSITORIO>`
+```
 
 Ingresar al directorio del proyecto:
 
-`cd intelligent-traffic-application`
+```text
+cd intelligent-traffic-application
+```
 
 ### 2. Configurar el backend
 
 Ingresar a la carpeta del backend:
 
-`cd backend`
+```text
+cd backend
+```
 
 Crear un entorno virtual:
 
-`python -m venv .venv`
+```text
+python -m venv .venv
+```
 
 Activar el entorno virtual en Windows:
 
-`.venv\Scripts\Activate.ps1`
+```text
+.venv\Scripts\Activate.ps1
+```
 
 Instalar las dependencias:
 
-`pip install -r requirements.txt`
+```text
+pip install -r requirements.txt
+```
 
 Iniciar el servidor:
 
-`python run.py`
+```text
+python run.py
+```
 
 El backend estará disponible en:
 
-`http://127.0.0.1:5000`
+```text
+http://127.0.0.1:5000
+```
 
 La API carga los archivos CSV y construye la representación del grafo durante el inicio del servidor.
 
@@ -254,23 +270,33 @@ La API carga los archivos CSV y construye la representación del grafo durante e
 
 Abrir una segunda terminal y regresar al directorio raíz del proyecto:
 
-`cd frontend`
+```text
+cd frontend
+```
 
 Instalar las dependencias:
 
-`npm install`
+```text
+npm install
+```
 
 Crear el archivo .env a partir del archivo de ejemplo .env.example:
 
-`VITE_API_BASE_URL=http://127.0.0.1:5000/api`
+```text
+VITE_API_BASE_URL=http://127.0.0.1:5000/api
+```
 
 Iniciar el servidor de desarrollo:
 
-`npm run dev`
+```text
+npm run dev
+```
 
 El frontend estará disponible en:
 
-`http://localhost:5173`
+```text
+http://localhost:5173
+```
 
 Una vez iniciados ambos servidores, se podrá utilizar la aplicación desde el navegador.
 
@@ -287,24 +313,26 @@ El backend proporciona los siguientes endpoints:
 
 ### Consulta de establecimientos
 
-`GET /api/establishments`
+```text
+GET /api/establishments
+```
 
 También admite parámetros opcionales:
 
-- `type:`filtra por tipo de establecimiento.
+- `type`: filtra por tipo de establecimiento.
 
-- `q:`permite buscar por identificador, nombre o distrito.
+- `q`: permite buscar por identificador, nombre o distrito.
 
 ### Cálculo de rutas
 
-```
+```text
 POST /api/routes/compute
 Content-Type: application/json
 ```
 
 Ejemplo del cuerpo de la solicitud:
 
-```
+```text
 {
   "origin_id": "L-001",
   "destination_id": "F-01149",
@@ -316,19 +344,19 @@ Ejemplo del cuerpo de la solicitud:
 
 Los campos representan:
 
-- `origin_id:`laboratorio de origen.
+- `origin_id`: laboratorio de origen.
 
-- `destination_id:`farmacia de destino.
+- `destination_id`: farmacia de destino.
 
-- `waypoint_ids:`lista de farmacias intermedias en el orden solicitado.
+- `waypoint_ids`: lista de farmacias intermedias en el orden solicitado.
 
-- `algorithm:`algoritmo de búsqueda (astar o dijkstra).
+- `algorithm`: algoritmo de búsqueda (astar o dijkstra).
 
-- `include_return:`indica si se debe intentar calcular el retorno al laboratorio.
+- `include_return`: indica si se debe intentar calcular el retorno al laboratorio.
 
 ### Comparación de algoritmos
 
-```
+```text
 POST /api/routes/compare
 Content-Type: application/json
 ```
@@ -341,7 +369,9 @@ El backend incluye pruebas unitarias para comprobar el funcionamiento de los alg
 
 Para ejecutarlas, ingresar a la carpeta backend con el entorno virtual activado y ejecutar:
 
-`python -m pytest`
+```text
+python -m pytest
+```
 
 Las pruebas actuales verifican que A* y Dijkstra encuentren el camino esperado en un grafo de prueba y que el costo calculado sea correcto.
 

@@ -16,6 +16,7 @@ import EstablishmentSelect from '../components/EstablishmentSelect.vue'
 import WaypointList from '../components/WaypointList.vue'
 import RouteSummary from '../components/RouteSummary.vue'
 import RouteVisualization from '../components/RouteVisualization.vue'
+import ComparisonModal from '../components/ComparisonModal.vue'
 
 import { api } from '../services/api'
 
@@ -38,9 +39,8 @@ const errorMessage = ref('')
 
 const routeResult = ref(null)
 const returnResult = ref(null)
-const returnAvailable = ref(null)
-const returnMessage = ref('')
 const comparison = ref(null)
+const showComparisonModal = ref(false)
 
 // FILTERED ESTABLISHMENTS
 const laboratories = computed(() =>
@@ -174,12 +174,14 @@ function buildPayload() {
 }
 
 // CALCULATE ROUTE
+
 async function calculateRoute(compare = false) {
   errorMessage.value = ''
 
   routeResult.value = null
   returnResult.value = null
   comparison.value = null
+  showComparisonModal.value = false
 
   const validationError = validateForm()
 
@@ -194,15 +196,13 @@ async function calculateRoute(compare = false) {
     const payload = buildPayload()
 
     if (compare) {
-      comparison.value = await api.compareRoutes(payload)
+      const result = await api.compareRoutes(payload)
 
-      const result = comparison.value.astar
+      comparison.value = result
 
-      routeResult.value = result.outbound
-      returnResult.value = result.return_route
-
-      returnAvailable.value = result.return_available
-      returnMessage.value = result.return_message
+      // Abrir el modal únicamente cuando
+      // la comparación haya finalizado.
+      showComparisonModal.value = true
 
     } else {
       const result = await api.computeRoute(payload)
@@ -221,8 +221,16 @@ async function calculateRoute(compare = false) {
   } finally {
     loading.value = false
   }
-
 }
+
+const astarResult = computed(() =>
+  comparison.value?.astar?.outbound ?? null
+)
+
+const dijkstraResult = computed(() =>
+  comparison.value?.dijkstra?.outbound ?? null
+)
+
 
 // RESET FORM
 function resetForm() {
@@ -236,8 +244,6 @@ function resetForm() {
 
   routeResult.value = null
   returnResult.value = null
-  returnAvailable.value = null
-  returnMessage.value = ''
   comparison.value = null
 
   errorMessage.value = ''
@@ -408,16 +414,6 @@ function resetForm() {
 
           </label>
 
-          <!-- ERROR MESSAGE -->
-
-          <div
-            v-if="errorMessage"
-            class="error-message"
-          >
-            <AlertCircle :size="16" />
-            {{ errorMessage }}
-          </div>
-
           <!-- ACTION BUTTONS -->
 
           <div class="form-actions">
@@ -466,83 +462,19 @@ function resetForm() {
 
           <RouteVisualization
             :result="routeResult"
-            :establishments="establishments"
-            :selected-ids="waypoints"
+            :return-result="returnResult"
           />
-
-          <!-- RETURN ROUTE -->
-
-          <section
-            v-if="returnResult"
-            class="return-card"
-          >
-
-            <span class="eyebrow">
-              RECORRIDO COMPLEMENTARIO
-            </span>
-
-            <h2>Retorno al laboratorio</h2>
-
-            <p>
-              El retorno se calcula independientemente
-              del recorrido de ida.
-            </p>
-
-            <div class="return-path">
-
-              <span
-                v-for="(id, index) in returnResult.path"
-                :key="`${id}-${index}`"
-              >
-                {{ establishments.find(
-                  item => item.id_nodo === id
-                )?.nombre || id }}
-              </span>
-
-            </div>
-          </section>
-
-          <section
-            v-if="includeReturn && returnAvailable !== null"
-            class="return-card"
-          >
-            <span class="eyebrow">
-              ESTADO DEL RETORNO
-            </span>
-
-            <h2>
-            {{
-              returnAvailable
-              ? 'Retorno disponible'
-              : 'Retorno no disponible'
-            }}
-            </h2>
-
-            <p>
-            {{ returnMessage }}
-            </p>
-          </section>
-          
 
           <!-- COMPARISON -->
 
-          <section
-            v-if="comparison"
-            class="comparison-card"
-          >
-
-            <span class="eyebrow">
-              COMPARACIÓN DE ALGORITMOS
-            </span>
-
-            <h2>Resultados comparativos</h2>
-
-            <pre>{{ JSON.stringify(comparison, null, 2) }}</pre>
-
-          </section>
-
+          <ComparisonModal
+            v-if="showComparisonModal && astarResult && dijkstraResult"
+            :astar="astarResult"
+            :dijkstra="dijkstraResult"
+            @close="showComparisonModal = false"
+          />
+          
         </div>
-
       </div>
 
       <footer>

@@ -1058,7 +1058,7 @@ button {
 }
 
 .legend-dot.origin {
-  background: #20a477;
+  background: #df6b67;
 }
 
 .legend-dot.middle {
@@ -1066,7 +1066,7 @@ button {
 }
 
 .legend-dot.destination {
-  background: #df6b67;
+  background: #20a477;
 }
 
 .legend-dot.transit {

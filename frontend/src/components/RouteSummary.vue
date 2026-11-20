@@ -15,6 +15,11 @@ const props = defineProps({
   loading: {
     type: Boolean,
     default: false
+  },
+
+  title: {
+    type: String,
+    default: 'Resumen de ruta'
   }
 })
 
@@ -40,7 +45,7 @@ function metric(primary, secondary) {
     <div class="section-heading">
       <div>
         <span class="eyebrow">RESULTADO</span>
-        <h2>Resumen de ruta</h2>
+        <h2>{{title}}</h2>
       </div>
 
       <span
@@ -147,9 +152,10 @@ function metric(primary, secondary) {
     </div>
 
     <p class="disclaimer">
-      Los tiempos y distancias son estimaciones del
-      grafo abstracto. No representan tráfico en
-      tiempo real ni navegación por calles.
+      Las distancias y tiempos corresponden a estimaciones
+      calculadas sobre la red vial de OpenStreetMap,
+      utilizando velocidades y factores de congestión
+      modelados. No representan tráfico en tiempo real.
     </p>
 
   </section>

@@ -1,5 +1,7 @@
 # Intelligent Traffic Application
 
+![Application](docs/application-screenshot.png)
+
 Aplicación web académica para la planificación y el cálculo de rutas de distribución de productos médicos entre laboratorios farmacéuticos y farmacias o boticas de Lima Metropolitana.
 
 El proyecto utiliza algoritmos de búsqueda en grafos para calcular recorridos considerando los tiempos estimados de desplazamiento entre establecimientos. Además, permite comparar los resultados obtenidos mediante los algoritmos A* y Dijkstra.
@@ -92,6 +94,7 @@ intelligent-traffic-application/
 │   │   │
 │   │   ├── services/
 │   │   │   ├── data_service.py
+|   |   |   ├── road_network_service.py
 │   │   │   └── route_service.py
 │   │   │
 │   │   ├── utils/
@@ -102,15 +105,20 @@ intelligent-traffic-application/
 │   │
 │   ├── tests/
 │   │   ├── test_astar.py
+|   |   ├── test_dataset_topolgy.py
+|   |   ├── test_resturn_directionality.py
 │   │   └── test_dijkstra.py
 │   │
 │   ├── requirements.txt
+|   ├── check_return.py
 │   └── run.py
 │
 ├── data/
 │   └── processed/
 │       ├── nodos_establecimientos_lima.csv
-│       └── aristas_rutas_modeladas.csv
+│       ├── aristas_rutas_modeladas.csv
+|       ├── establecimientos_contraste_vial.csv
+|       └── red_vial_lima.graphml
 │
 ├── frontend/
 │   ├── public/
@@ -375,28 +383,8 @@ python -m pytest
 
 Las pruebas actuales verifican que A* y Dijkstra encuentren el camino esperado en un grafo de prueba y que el costo calculado sea correcto.
 
-## Alcance y consideraciones actuales
-
-La aplicación corresponde a un prototipo académico orientado al análisis y la planificación de recorridos mediante algoritmos de grafos.
-
-Su funcionamiento actual considera las siguientes características:
-
-- La red se representa mediante conexiones dirigidas entre establecimientos.
-
-- Los pesos utilizados para el cálculo corresponden a tiempos estimados.
-
-- Las farmacias intermedias se visitan en el orden definido por el usuario.
-
-- A* y Dijkstra calculan los recorridos entre los puntos seleccionados.
-
-- El retorno al laboratorio se calcula como un recorrido independiente.
-
-- Los datos de congestión y velocidad corresponden a escenarios modelados, no a mediciones de tráfico en tiempo real.
-
-Por lo tanto, los resultados representan estimaciones basadas en el dataset y el modelo de conexiones utilizado, no instrucciones de navegación vial en tiempo real.
-
 ## Estado del proyecto
 
 Proyecto académico en desarrollo para el curso de Complejidad Algorítmica.
 
-El objetivo es aplicar y analizar algoritmos de búsqueda en grafos en un problema de planificación de rutas para la distribución de productos médicos en Lima Metropolitana.
+El objetivo es aplicar y analizar algoritmos de búsqueda en grafos en un problema de planificación de rutas y control de tráfico inteligente para la distribución de productos médicos en Lima Metropolitana.

@@ -1,7 +1,6 @@
 import heapq
 import math
 
-
 def dijkstra(
     origin_id: str,
     destination_id: str,

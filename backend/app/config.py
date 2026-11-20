@@ -26,3 +26,11 @@ class Config:
 
     # Peso utilizado para calcular la ruta.
     DEFAULT_WEIGHT = "tiempo_estimado_min"
+
+    ROAD_GRAPH_FILE = (
+    DATA_DIR / "red_vial_lima.graphml"
+    )
+
+    ROAD_MAPPING_FILE = (
+    DATA_DIR / "establecimientos_contraste_vial.csv"
+    )

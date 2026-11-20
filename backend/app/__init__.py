@@ -5,6 +5,7 @@ from app.config import Config
 from app.api.establishments import establishments_bp
 from app.api.routes import routes_bp
 from app.services.data_service import load_graph_data
+from app.services.road_network_service import (load_road_network)
 
 def create_app(test_config=None):
     """Crea y configura la aplicación Flask."""
@@ -31,6 +32,13 @@ def create_app(test_config=None):
         app.config["EDGES_FILE"]
     )
 
+    road_data = load_road_network(
+    app.config["ROAD_GRAPH_FILE"],
+    app.config["ROAD_MAPPING_FILE"],
+    graph_data["nodes"].keys()
+    )
+
+    app.extensions["road_data"] = road_data
     app.extensions["graph_data"] = graph_data
 
     # Registrar los endpoints.
@@ -45,8 +53,13 @@ def create_app(test_config=None):
             "status": "ok",
             "message": "Backend funcionando correctamente.",
             "data": {
-                "nodes": graph_data["node_count"],
-                "edges": graph_data["edge_count"]
+                "road_network": {
+                    "nodes": road_data["node_count"],
+                    "edges": road_data["edge_count"],
+                    "mapped_establishments": len(
+                        road_data["establishment_road_nodes"]
+                    )
+                }
             }
         })
 

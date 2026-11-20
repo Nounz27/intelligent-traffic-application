@@ -23,6 +23,7 @@ def calculate_for_algorithm(route_request, algorithm: str):
     """Ejecuta el cálculo con un algoritmo específico."""
 
     graph_data = current_app.extensions["graph_data"]
+    road_data = current_app.extensions["road_data"]
 
     return calculate_route(
         origin_id=route_request.origin_id,
@@ -31,9 +32,7 @@ def calculate_for_algorithm(route_request, algorithm: str):
         algorithm=algorithm,
         include_return=route_request.include_return,
         graph_data=graph_data,
-        heuristic_speed_kph=current_app.config[
-            "HEURISTIC_SPEED_KPH"
-        ]
+        road_data=road_data
     )
 
 @routes_bp.post("/compute")

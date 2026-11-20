@@ -3,7 +3,6 @@ import math
 
 from app.utils.geo import haversine_km
 
-
 def a_star(
     origin_id: str,
     destination_id: str,
